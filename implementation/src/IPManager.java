@@ -1,3 +1,4 @@
+import java.security.Provider;
 import java.util.*;
 public class IPManager implements TransferController {
     private IPDB DB; // IPDB is THE Instapay Database
@@ -232,9 +233,31 @@ public class IPManager implements TransferController {
         System.out.print("Enter the phone number you want to transfer to: ");
         Scanner scanner = new Scanner(System.in);
         String phoneNumber = scanner.nextLine();
+        char c = phoneNumber.charAt(2);
 
-        while(DB.getAccountByPhoneNumber(phoneNumber) == null){
-            System.out.println("This phone number isn't connected to a wallet");
+        if(DB.getAccountByPhoneNumber(phoneNumber) == null){
+            //System.out.println("This phone number isn't connected to a wallet");
+            if (c == "0") {
+                Provider p = new Provider("vodafone cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
+                if(p.verifyPhoneNumber(phoneNumber)){
+                    p.addBalance(amount);
+                }
+            }
+            else if(c == "1"){
+                Provider p = new Provider("etisalat cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
+                if(p.verifyPhoneNumber(phoneNumber)){
+                    p.addBalance(amount);
+                }
+            }
+            else if(c == "0"){
+                Provider p = new Provider("orange cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
+                if(p.verifyPhoneNumber(phoneNumber)){
+                    p.addBalance(amount);
+                }
+            }
+            else{
+                System.out.println("not a mobile number");
+            }
             return;
         }
 
