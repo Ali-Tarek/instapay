@@ -5,6 +5,7 @@ public class User {
     private double balance;
     private Provider provider;
     private Bill bill;
+    
     public User(String userName, String password, String phoneNumber, double balance, Provider provider){
         this.userName = userName;
         this.password = password;
