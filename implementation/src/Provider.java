@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Provider {
+    
     private String providerName;
     private String providerType;
     private Pair<String, Double> accountBalance;
