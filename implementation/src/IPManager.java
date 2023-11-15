@@ -152,7 +152,7 @@ public class IPManager implements TransferController {
             String phoneNumber = scanner.nextLine();
 
             /// verify phone number with otp
-
+            
             String otp = generateRandomString(6);
             System.out.print("This is a fake otp xD" + otp + "write it again to verify your phone number: ");
             String toOtp = scanner.nextLine();
@@ -267,43 +267,9 @@ public class IPManager implements TransferController {
         System.out.print("Enter the phone number you want to transfer to: ");
         Scanner scanner = new Scanner(System.in);
         String phoneNumber = scanner.nextLine();
-        char c = phoneNumber.charAt(2);
 
-        if(DB.getAccountByPhoneNumber(phoneNumber) == null){
-            //System.out.println("This phone number isn't connected to a wallet");
-            if (c == "0") {
-                Provider p = new Provider("vodafone cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
-                if(p.verifyPhoneNumber(phoneNumber)){
-                    System.out.print("Enter the amount you want to transfer: ");
-                    double amount = scanner.nextDouble();
-
-                    p.addBalance(amount);
-                    currentUser.setBalance(currentUser.getBalance() - amount);
-                }
-            }
-            else if(c == "1"){
-                Provider p = new Provider("etisalat cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
-                if(p.verifyPhoneNumber(phoneNumber)){
-                    System.out.print("Enter the amount you want to transfer: ");
-                    double amount = scanner.nextDouble();
-
-                    p.addBalance(amount);
-                    currentUser.setBalance(currentUser.getBalance() - amount);
-                }
-            }
-            else if(c == "0"){
-                Provider p = new Provider("orange cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
-                if(p.verifyPhoneNumber(phoneNumber)){
-                    System.out.print("Enter the amount you want to transfer: ");
-                    double amount = scanner.nextDouble();
-
-                    p.addBalance(amount);
-                    currentUser.setBalance(currentUser.getBalance() - amount);
-                }
-            }
-            else{
-                System.out.println("not a mobile number");
-            }
+        while(DB.getAccountByPhoneNumber(phoneNumber) == null){
+            System.out.println("This phone number isn't connected to a wallet");
             return;
         }
 
