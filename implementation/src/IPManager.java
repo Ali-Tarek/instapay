@@ -18,6 +18,22 @@ public class IPManager implements TransferController {
         this.DB = new IPDB();
 
     }
+    private String generateRandomString(int length) {
+
+        String characters = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()";
+
+        StringBuilder randomString = new StringBuilder();
+
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+
+            randomString.append(characters.charAt(randomIndex));
+        }
+
+        return randomString.toString();
+    }
     public void run(){
 
         boolean isRunning = true;
@@ -137,6 +153,15 @@ public class IPManager implements TransferController {
 
             /// verify phone number with otp
 
+            String otp = generateRandomString(6);
+            System.out.print("This is a fake otp xD" + otp + "write it again to verify your phone number: ");
+            String toOtp = scanner.nextLine();
+            while (toOtp != otp){
+                System.out.println("Wrong otp");
+                System.out.print("This is a fake otp xD" + otp + "write it again to verify your phone number: ");
+                toOtp = scanner.nextLine();
+            }
+
             System.out.print("Enter your username: ");
             String userName = scanner.nextLine();
 
@@ -157,6 +182,15 @@ public class IPManager implements TransferController {
             String phoneNumber = scanner.nextLine();
 
             /// verify phone number with otp
+
+            String otp = generateRandomString(6);
+            System.out.print("This is a fake otp xD" + otp + "write it again to verify your phone number: ");
+            String toOtp = scanner.nextLine();
+            while (toOtp != otp){
+                System.out.println("Wrong otp");
+                System.out.print("This is a fake otp xD" + otp + "write it again to verify your phone number: ");
+                toOtp = scanner.nextLine();
+            }
 
             System.out.print("Enter your username: ");
             String userName = scanner.nextLine();
@@ -240,19 +274,31 @@ public class IPManager implements TransferController {
             if (c == "0") {
                 Provider p = new Provider("vodafone cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
                 if(p.verifyPhoneNumber(phoneNumber)){
+                    System.out.print("Enter the amount you want to transfer: ");
+                    double amount = scanner.nextDouble();
+
                     p.addBalance(amount);
+                    currentUser.setBalance(currentUser.getBalance() - amount);
                 }
             }
             else if(c == "1"){
                 Provider p = new Provider("etisalat cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
                 if(p.verifyPhoneNumber(phoneNumber)){
+                    System.out.print("Enter the amount you want to transfer: ");
+                    double amount = scanner.nextDouble();
+
                     p.addBalance(amount);
+                    currentUser.setBalance(currentUser.getBalance() - amount);
                 }
             }
             else if(c == "0"){
                 Provider p = new Provider("orange cash", "mobile",new Pair<String, Double>("not IP account" , currentUser.getAccountBalance()));
                 if(p.verifyPhoneNumber(phoneNumber)){
+                    System.out.print("Enter the amount you want to transfer: ");
+                    double amount = scanner.nextDouble();
+
                     p.addBalance(amount);
+                    currentUser.setBalance(currentUser.getBalance() - amount);
                 }
             }
             else{
