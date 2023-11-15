@@ -25,6 +25,7 @@ public class Provider {
     public String getproviderType() {
         return providerType;
     }
+    
     public void setproviderType(String providerType) {
         this.providerType = providerType;
     }
