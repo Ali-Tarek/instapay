@@ -4,11 +4,17 @@ import java.util.Objects;
 public class Provider {
     private String providerName;
     private String providerType;
-    private ArrayList<Pair<String, Double>> accountsBalance;
-    public Provider(String providerName, String providerType){
+    private Pair<String, Double> accountBalance;
+    public Provider(String providerName, String providerType, Pair<String, Double> accountBalance){
         this.providerName = providerName;
         this.providerType = providerType;
-        accountsBalance = new ArrayList<>();
+        this.accountBalance = accountBalance;
+    }
+    public Double getAccountBalance(){
+        return this.accountBalance.second;
+    }
+    public void setAccountBalance(Double amount){
+        this.accountBalance.second = amount;
     }
     public String getProviderName() {
         return providerName;
@@ -28,13 +34,8 @@ public class Provider {
         return true;
     }
 
-    public void addBalance(String data, double amount){
-        for(int i = 0; i < accountsBalance.size(); i++){
-            if(Objects.equals(accountsBalance.get(i).first, data)){
-                accountsBalance.get(i).second += amount;
-                return;
-            }
-        }
+    public void addBalance(Double amount){
+        this.accountBalance.second += amount;
     }
 
 }

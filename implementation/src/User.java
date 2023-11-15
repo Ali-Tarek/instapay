@@ -4,14 +4,22 @@ public class User {
     private String phoneNumber;
     private double balance;
     private Provider provider;
+    private Bill bill;
     public User(String userName, String password, String phoneNumber, double balance, Provider provider){
         this.userName = userName;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.balance = balance;
         this.provider = provider;
+        this.bill = new Bill();
     }
     public void displayLoggedInMenu(){}
+    public Bill getBill() {
+        return bill;
+    }
+    public void setBill(Bill bill) {
+        this.bill = bill;
+    }
     public String getUserName() {
         return userName;
     }

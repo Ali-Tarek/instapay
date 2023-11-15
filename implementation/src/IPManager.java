@@ -2,7 +2,7 @@ import java.util.*;
 public class IPManager implements TransferController {
     private IPDB DB; // IPDB is THE Instapay Database
     private User currentUser;
-    private TransferController TSControler;
+    private Provider provider;
     private void displayLoggedOutMenu(){
         System.out.println("1- Signup");
         System.out.println("2- Login");
@@ -58,8 +58,8 @@ public class IPManager implements TransferController {
             Scanner scanner = new Scanner(System.in);
             int option = scanner.nextInt();
 
-            if(currentUser.getProvider().getproviderType() == "bank"){
-                /// a3ml class transactions mas2ool 3n kol dool
+            if(Objects.equals(currentUser.getProvider().getproviderType(), "bank")){
+
                 switch (option){
                     case 1:
                         payBills();
@@ -68,7 +68,7 @@ public class IPManager implements TransferController {
                         transferToWallet();
                         break;
                     case 3:
-                       transferToIPAcc();
+                        transferToIPAcc();
                         break;
                     case 4:
                         transferToBankAcc();
@@ -98,7 +98,7 @@ public class IPManager implements TransferController {
                         transferToIPAcc();
                         break;
                     case 4:
-                        currentUser.getBalance();
+                        System.out.println("Your balance is: " + currentUser.getBalance());
                         break;
                     case 5:
                         currentUser = null;
@@ -144,9 +144,9 @@ public class IPManager implements TransferController {
 
             System.out.print("Enter your provider name: ");
             String providerName = scanner.nextLine();
-            Provider provider = new WalletProvider(providerName, "bank");
+            Provider provider = new BankProvider(providerName, "bank", new Pair <String, Double>(bankAcc, 10000.0));
 
-            User newUser = new BankAccount(userName, password, phoneNumber, 0, provider, bankAcc);
+            User newUser = new BankAccount(userName, password, phoneNumber, 10000.0, provider, bankAcc);
             DB.addAccount(newUser);
 
         }
@@ -165,9 +165,9 @@ public class IPManager implements TransferController {
 
             System.out.print("Enter your provider name: ");
             String providerName = scanner.nextLine();
-            Provider provider = new WalletProvider(providerName, "wallet");
+            Provider provider = new WalletProvider(providerName, "wallet", new Pair <String, Double>(phoneNumber, 10000.0));
 
-            User newUser = new WalletAccount(userName, password, phoneNumber, 0, provider);
+            User newUser = new WalletAccount(userName, password, phoneNumber, 10000.0, provider);
             DB.addAccount(newUser);
 
         }
@@ -200,6 +200,30 @@ public class IPManager implements TransferController {
 
     private void payBills(){
 
+        currentUser.getBill().displayBillMenu();
+        Scanner scanner = new Scanner(System.in);
+        int option = scanner.nextInt();
+
+        switch (option){
+            case 1:
+                currentUser.setBill(new ElectricityBill("Electricity"));
+                currentUser.setBalance(currentUser.getBalance() - currentUser.getBill().pay());
+                break;
+
+            case 2:
+                currentUser.setBill(new WaterBill("Water"));
+                currentUser.setBalance(currentUser.getBalance() - currentUser.getBill().pay());
+                break;
+
+            case 3:
+                currentUser.setBill(new GasBill("Gas"));
+                currentUser.setBalance(currentUser.getBalance() - currentUser.getBill().pay());
+                break;
+
+            default:
+                System.out.println("\nInvalid Option\n");
+        }
+        System.out.println("Done");
     }
 
     @Override
@@ -217,7 +241,7 @@ public class IPManager implements TransferController {
         System.out.print("Enter the amount you want to transfer: ");
         double amount = scanner.nextDouble();
 
-        DB.getAccountByPhoneNumber(phoneNumber).getProvider().addBalance(phoneNumber, amount);
+        DB.getAccountByPhoneNumber(phoneNumber).getProvider().addBalance(amount);
         currentUser.setBalance(currentUser.getBalance() - amount);
 
     }
@@ -255,7 +279,7 @@ public class IPManager implements TransferController {
         System.out.print("Enter the amount you want to transfer: ");
         double amount = scanner.nextDouble();
 
-        DB.getAccountBybankAccount(bankAcc).getProvider().addBalance(bankAcc, amount);
+        DB.getAccountBybankAccount(bankAcc).getProvider().addBalance(amount);
         currentUser.setBalance(currentUser.getBalance() - amount);
 
     }
